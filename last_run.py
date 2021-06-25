@@ -22,7 +22,7 @@ class LastRun:
             else:
                 return None
 
-    def set_last_run(self, last_run):
+    def set_last_run(self, last_run: str):
         if isinstance(self.handle, StrictRedis):
             self.handle.set("last_run", last_run)
         if isinstance(self.handle, str):

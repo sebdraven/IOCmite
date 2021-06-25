@@ -2,17 +2,25 @@ from last_run import LastRun
 from redis import StrictRedis
 from dateutil import parser
 from datetime import datetime
+from misp_client import MispClient
+from suricata_dataset import Suricata_Dataset
 import base64
 
 
 class Sched:
-    def __init__(self, client_misp, sc_dataset, is_redis="False", tmp_file=""):
+    def __init__(
+        self,
+        client_misp: MispClient,
+        sc_dataset: Suricata_Dataset,
+        is_redis="False",
+        tmp_file="",
+    ):
         self.client_redis = StrictRedis(db=1)
         self.client_misp = client_misp
         self.sc_dataset = sc_dataset
         self.last_run = LastRun(is_redis=is_redis, tmp_file=tmp_file)
 
-    def run(self, attributes_datasets):
+    def run(self, attributes_datasets: dict):
         self.sc_dataset.connect()
         last_run = self.last_run.get_last_run("last_run")
         if last_run:

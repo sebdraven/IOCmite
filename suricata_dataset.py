@@ -5,7 +5,7 @@ class Suricata_Dataset:
     def __init__(self, path_socket="/var/run/suricata/suricata-command.socket"):
         self.sc = SuricataSC(path_socket, verbose=True)
 
-    def add_dataset(self, name, type_data, value):
+    def add_dataset(self, name: str, type_data: str, value: str):
 
         cmd, args = self.sc.parse_command(
             "dataset-add %s %s %s" % (name, type_data, value)
@@ -19,7 +19,7 @@ class Suricata_Dataset:
         else:
             return False
 
-    def remove_dataset(self, name, type_data, value):
+    def remove_dataset(self, name: str, type_data: str, value: str):
         cmd, args = self.sc.parse_command(
             "dataset-remove %s %s %s" % (name, type_data, value)
         )

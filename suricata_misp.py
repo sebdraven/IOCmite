@@ -1,12 +1,23 @@
 import argparse
 import json
+import os.path
 from suricata_dataset import Suricata_Dataset
 from misp_client import MispClient
 from sched_client import Sched
-import os.path
+from alerts import Alerts
 
 
-def run(config, is_redis, tmp_file):
+def alerts(config: str, is_redis: bool, eve_json: bool):
+    if os.path.isfile(config):
+        setting = json.load(open(config))
+        if eve_json:
+            eve_json_file = config["eve_json"]
+        client_misp = MispClient(setting["misp"]["url"], setting["misp"]["key"])
+        alerts = Alerts(client_misp, setting["metadata"])
+        alerts.pull(is_redis, eve_json)
+
+
+def run(config: str, is_redis: str, tmp_file: str):
     if os.path.isfile(config):
         setting = json.load(open(config))
         client_misp = MispClient(setting["misp"]["url"], setting["misp"]["key"])
@@ -31,6 +42,8 @@ def parse_commande_line():
 
     parser.add_argument("--tmp_file", action="store_true", dest="tmp_file")
 
+    parser.add_argument("--alerts", action="store_true", dest="alerts")
+    parser.add_argument("--eve_json", action="store_true", dest="eve_json")
     return parser.parse_args()
 
 
@@ -38,4 +51,5 @@ if __name__ == "__main__":
     args = parse_commande_line()
     if args.run and args.config:
         run(args.config, args.redis, args.tmp_file)
-        pass
+    if args.alerts and args.config:
+        alerts(args.config, args.redis, args.eve_json)
