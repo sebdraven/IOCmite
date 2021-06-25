@@ -17,11 +17,11 @@ class Sched:
             date_from = parser.parse(last_run)
         else:
             date_from = None
-        for type_attr, type_by_name_dataset in attributes_datasets.items():
+        for type_attr, name_dataset_type in attributes_datasets.items():
             for att in self.client_misp.get_last_attributes(date_from, type_attr):
                 attr_encode = base64.b64encode(att["value"].encode()).decode()
-                name_dataset = type_by_name_dataset[0]
-                type_suricata = type_by_name_dataset[1]
+                name_dataset = name_dataset_type["name"]
+                type_suricata = name_dataset_type["type"]
                 self.sc_dataset.add_dataset(name_dataset, type_suricata, attr_encode)
         self.sc_dataset.disconnect()
         time_run = datetime.now().isoformat()
