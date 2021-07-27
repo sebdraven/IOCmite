@@ -8,12 +8,13 @@ from alerts import Alerts
 
 
 def alerts(config: str, is_redis: bool, eve_json: bool):
+    eve_json_file = ""
     if os.path.isfile(config):
         setting = json.load(open(config))
         if eve_json:
-            eve_json_file = config["eve_json"]
+            eve_json_file = setting["eve_json"]
         client_misp = MispClient(setting["misp"]["url"], setting["misp"]["key"])
-        alerts = Alerts(client_misp, setting["metadata"])
+        alerts = Alerts(client_misp, setting["metadata"], eve_json_file=eve_json_file)
         alerts.pull(is_redis, eve_json)
 
 
