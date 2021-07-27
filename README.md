@@ -14,6 +14,8 @@ This concept is detailed [here](https://suricata.readthedocs.io/en/suricata-6.0.
 `python3 -m'venv' venv && source venv\bin\activate`
 `pip install -r requirements.txt`
 `python setup.py install`
+Download the last release of Suricata [here](https://www.openinfosecfoundation.org/download/suricata-current.tar.gz).
+` and tar xvfz suricata-6.0.x && cd suricata-6.0.x/python && python setup install`
 
 ## Json setting and Rule Suricata
 
