@@ -2,8 +2,8 @@ from suricata_misp.last_run import LastRun
 from redis import StrictRedis
 from dateutil import parser
 from datetime import datetime
-from misp_client import MispClient
-from suricata_dataset import Suricata_Dataset
+from suricata_misp.misp_client import MispClient
+from suricata_misp.suricata_dataset import Suricata_Dataset
 import base64
 
 

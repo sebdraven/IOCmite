@@ -63,9 +63,13 @@ def parse_commande_line():
     return parser.parse_args()
 
 
-if __name__ == "__main__":
+def main():
     args = parse_commande_line()
     if args.run and args.config:
         run(args.config, args.redis, args.tmp_file)
     if args.alerts and args.config:
         alerts(args.config, args.redis, args.eve_json)
+
+
+if __name__ == "__main__":
+    main()

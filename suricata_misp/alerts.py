@@ -2,7 +2,7 @@ import json
 import logging
 import time
 import tailer
-from misp_client import MispClient
+from suricata_misp.misp_client import MispClient
 from multiprocessing import Process
 import os.path
 from redis import StrictRedis
