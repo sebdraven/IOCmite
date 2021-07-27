@@ -39,7 +39,11 @@ def run(config: str, is_redis: bool, tmp_file: bool):
         setting = json.load(open(config))
         client_misp = MispClient(setting["misp"]["url"], setting["misp"]["key"])
         sc_dataset = Suricata_Dataset()
-        sched_run = Sched(client_misp, sc_dataset, is_redis, tmp_file)
+
+        if tmp_file:
+            sched_run = Sched(client_misp, sc_dataset, tmp_file=setting["tmp_file"])
+        if is_redis:
+            sched_run = Sched(client_misp, sc_dataset, is_redis=True)
         sched_run.run(setting["datasets"])
     else:
         logging.error("%s is not a file" % config)

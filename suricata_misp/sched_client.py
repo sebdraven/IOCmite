@@ -12,7 +12,7 @@ class Sched:
         self,
         client_misp: MispClient,
         sc_dataset: Suricata_Dataset,
-        is_redis="False",
+        is_redis=False,
         tmp_file="",
     ):
         self.client_redis = StrictRedis(db=1)
@@ -21,7 +21,6 @@ class Sched:
         self.last_run = LastRun(is_redis=is_redis, tmp_file=tmp_file)
 
     def run(self, attributes_datasets: dict):
-        """"""
         self.sc_dataset.connect()
         last_run = self.last_run.get_last_run()
         if last_run:

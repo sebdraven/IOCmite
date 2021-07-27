@@ -10,8 +10,7 @@ class LastRun:
         if is_redis:
             self.handle = StrictRedis(db=1)
         if tmp_file:
-            if os.path.isfile(self.tmp_file):
-                self.handle = self.tmp_file
+            self.handle = tmp_file
 
     def get_last_run(self) -> str:
         """Get the last run of the the script from the redis server .
@@ -22,7 +21,7 @@ class LastRun:
         if isinstance(self.handle, StrictRedis):
             return self.handle.get("last_run")
         if isinstance(self.handle, str):
-            if os.path.is_file(self.tmp_file):
+            if os.path.isfile(self.handle):
                 return open(self.handle).readline()
             else:
                 return None
@@ -36,5 +35,4 @@ class LastRun:
         if isinstance(self.handle, StrictRedis):
             self.handle.set("last_run", last_run)
         if isinstance(self.handle, str):
-            if os.path.is_file(self.tmp_file):
-                open(self.handle, "w").write(last_run)
+            open(self.handle, "w").write(last_run)
