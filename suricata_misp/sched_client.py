@@ -23,7 +23,7 @@ class Sched:
     def run(self, attributes_datasets: dict):
         """"""
         self.sc_dataset.connect()
-        last_run = self.last_run.get_last_run("last_run")
+        last_run = self.last_run.get_last_run()
         if last_run:
             date_from = parser.parse(last_run)
         else:
@@ -36,4 +36,4 @@ class Sched:
                 self.sc_dataset.add_dataset(name_dataset, type_suricata, attr_encode)
         self.sc_dataset.disconnect()
         time_run = datetime.now().isoformat()
-        self.last_run.set_last_run("last_run", time_run)
+        self.last_run.set_last_run(time_run)

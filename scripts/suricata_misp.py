@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import json
+import logging
 import os.path
 from suricata_misp.suricata_dataset import Suricata_Dataset
 from suricata_misp.misp_client import MispClient
@@ -26,7 +27,7 @@ def alerts(config: str, is_redis: bool, eve_json: bool):
         alerts.pull(is_redis, eve_json)
 
 
-def run(config: str, is_redis: str, tmp_file: str):
+def run(config: str, is_redis: bool, tmp_file: bool):
     """Dowload the last indicator from the the last run to store in a dataset Suricata.
 
     Args:
@@ -40,6 +41,8 @@ def run(config: str, is_redis: str, tmp_file: str):
         sc_dataset = Suricata_Dataset()
         sched_run = Sched(client_misp, sc_dataset, is_redis, tmp_file)
         sched_run.run(setting["datasets"])
+    else:
+        logging.error("%s is not a file" % config)
 
 
 def parse_commande_line():
