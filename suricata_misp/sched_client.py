@@ -1,4 +1,4 @@
-from last_run import LastRun
+from suricata_misp.last_run import LastRun
 from redis import StrictRedis
 from dateutil import parser
 from datetime import datetime
