@@ -8,6 +8,13 @@ from alerts import Alerts
 
 
 def alerts(config: str, is_redis: bool, eve_json: bool):
+    """parse alerts Suricata in redis or eve_json to add sightings in MISP.
+
+    Args:
+        config (str): [file of the configuration]
+        is_redis (bool): [if redis is used to store alerts]
+        eve_json (bool): [if eve json is used to store alerts]
+    """
     eve_json_file = ""
     if os.path.isfile(config):
         setting = json.load(open(config))
@@ -19,6 +26,13 @@ def alerts(config: str, is_redis: bool, eve_json: bool):
 
 
 def run(config: str, is_redis: str, tmp_file: str):
+    """Dowload the last indicator from the the last run to store in a dataset Suricata.
+
+    Args:
+        config (str): [file of the configuration]
+        is_redis (str): [if redis is used to store the last run]
+        tmp_file (str): [if a temorary file is used to store the last run]
+    """
     if os.path.isfile(config):
         setting = json.load(open(config))
         client_misp = MispClient(setting["misp"]["url"], setting["misp"]["key"])

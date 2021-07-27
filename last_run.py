@@ -13,7 +13,12 @@ class LastRun:
             if os.path.isfile(self.tmp_file):
                 self.handle = self.tmp_file
 
-    def get_last_run(self):
+    def get_last_run(self) -> str:
+        """Get the last run of the the script from the redis server .
+
+        Returns:
+            [str]: [date of the last run]
+        """
         if isinstance(self.handle, StrictRedis):
             return self.handle.get("last_run")
         if isinstance(self.handle, str):
@@ -23,6 +28,11 @@ class LastRun:
                 return None
 
     def set_last_run(self, last_run: str):
+        """Set the last run of the script in this Redis instance .
+
+        Args:
+            last_run (str): [date of the last run of the script]
+        """
         if isinstance(self.handle, StrictRedis):
             self.handle.set("last_run", last_run)
         if isinstance(self.handle, str):

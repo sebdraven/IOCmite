@@ -8,7 +8,17 @@ class MispClient:
 
         self.api = PyMISP(url=url, key=key)
 
+    
     def get_last_attributes(self, datefrom: str, type_attribute: str):
+        """Get last attributes from the device .
+
+        Args:
+            datefrom (str): [date from the last attributes]
+            type_attribute (str): [atribute type of MISP]
+
+        Yields:
+            [str]: [values of the attributes ]
+        """
         res = self.api.search(
             controller="attributes",
             date_from=datefrom,
@@ -20,6 +30,11 @@ class MispClient:
                 yield r
 
     def add_sighting(self, attribute_value: str):
+        """Add a sight in MISP on the attribute value.
+
+        Args:
+            attribute_value (str): [attribut value to add sight]
+        """
         res = self.api.search(controller="attributes", value=attribute_value)
         for attr in res["Attribute"]:
             sight = MISPSighting()

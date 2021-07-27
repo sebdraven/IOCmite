@@ -24,13 +24,25 @@ class Alerts:
         self.metadata = metadata
         self.eve_json_file = eve_json_file
 
-    def pull(self, is_redis, eve_json):
+    def pull(self, is_redis: bool, eve_json: bool):
+        """Pull the alerts from the alerts suricata of the dataset and add a sighiting in MISP server
+        Args:
+            is_redis (bool): [True if the alerts are in redis]
+            eve_json (bool): [True if the alerts are in eve_json]
+        """
+
         if is_redis:
             self.__pull_redis()
         if eve_json:
             self.__pull_eve()
 
-    def decode_message(self, message):
+    def decode_message(self, message: str):
+        """Decode a JSON message received from alerts suricata of the dataset
+        and add a sighiting in MISP server
+
+        Args:
+            message ([strt]): [message of the alerts]
+        """
         dict_message = json.loads(message)
         if (
             "alert" in dict_message
@@ -42,6 +54,8 @@ class Alerts:
                 self.misp_client.add_sighting(hostname)
 
     def __pull_redis(self):
+        """Pull the alerts from the dataset of redis  and add a sighiting in MISP server"""
+
         client = StrictRedis(db=self.db)
 
         while True:
@@ -53,7 +67,7 @@ class Alerts:
             time.sleep(1)
 
     def __pull_eve(self):
-
+        """Pull the alerts from the alerts suricata of the dataset and add a sighiting in MISP server"""
         if not os.path.isfile(self.eve_json_file):
             logging.error("%s is not file" % self.eve_json_file)
             return
