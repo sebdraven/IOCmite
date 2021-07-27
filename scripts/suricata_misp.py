@@ -28,7 +28,7 @@ def alerts(config: str, is_redis: bool, eve_json: bool):
 
 
 def run(config: str, is_redis: bool, tmp_file: bool):
-    """Dowload the last indicator from the the last run to store in a dataset Suricata.
+    """Download the last indicator from the the last run to store in a dataset Suricata.
 
     Args:
         config (str): [file of the configuration]
