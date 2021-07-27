@@ -1,10 +1,10 @@
 import argparse
 import json
 import os.path
-from suricata_dataset import Suricata_Dataset
-from misp_client import MispClient
-from sched_client import Sched
-from alerts import Alerts
+from suricata_misp.suricata_dataset import Suricata_Dataset
+from suricata_misp.misp_client import MispClient
+from suricata_misp.sched_client import Sched
+from suricata_misp.alerts import Alerts
 
 
 def alerts(config: str, is_redis: bool, eve_json: bool):

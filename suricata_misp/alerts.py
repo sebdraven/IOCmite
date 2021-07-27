@@ -1,6 +1,5 @@
 import json
 import logging
-import re
 import time
 import tailer
 from misp_client import MispClient
