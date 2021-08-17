@@ -55,8 +55,9 @@ class Sightings:
 
             tokens = path_json.split(".")
             attrib = {}
-            for token in tokens.pop():
-                attrib = dict_message[token]
+            attrib = dict_message[tokens[0]]
+            for token in tokens[1:]:
+                attrib = attrib[token]
 
             self.misp_client.add_sighting(attrib)
 
