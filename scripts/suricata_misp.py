@@ -9,7 +9,7 @@ from suricata_misp.sched_client import Sched
 from suricata_misp.alerts import Alerts
 
 
-def alerts(config: str, is_redis: bool, eve_json: bool):
+def sightings(config: str, is_redis: bool, eve_json: bool):
     """parse alerts Suricata in redis or eve_json to add sightings in MISP.
 
     Args:
@@ -27,7 +27,7 @@ def alerts(config: str, is_redis: bool, eve_json: bool):
         alerts.pull(is_redis, eve_json)
 
 
-def run(config: str, is_redis: bool, tmp_file: bool):
+def import_iocs(config: str, is_redis: bool, tmp_file: bool):
     """Download the last indicator from the the last run to store in a dataset Suricata.
 
     Args:
@@ -52,10 +52,10 @@ def run(config: str, is_redis: bool, tmp_file: bool):
 def parse_commande_line():
     parser = argparse.ArgumentParser(description="Misp to Suricata")
     parser.add_argument(
-        "--run",
+        "--import",
         action="store_true",
-        help="First import IOCs in dataset Suricata",
-        dest="run",
+        help="Import IOCs in dataset Suricata",
+        dest="import_ioc",
     )
 
     parser.add_argument(
@@ -65,17 +65,17 @@ def parse_commande_line():
 
     parser.add_argument("--tmp_file", action="store_true", dest="tmp_file")
 
-    parser.add_argument("--alerts", action="store_true", dest="alerts")
+    parser.add_argument("--sightings", action="store_true", dest="sightings")
     parser.add_argument("--eve_json", action="store_true", dest="eve_json")
     return parser.parse_args()
 
 
 def main():
     args = parse_commande_line()
-    if args.run and args.config:
-        run(args.config, args.redis, args.tmp_file)
+    if args.import_ioc and args.config:
+        import_iocs(args.config, args.redis, args.tmp_file)
     if args.alerts and args.config:
-        alerts(args.config, args.redis, args.eve_json)
+        sightings(args.config, args.redis, args.eve_json)
 
 
 if __name__ == "__main__":
