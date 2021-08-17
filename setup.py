@@ -25,7 +25,7 @@ setup(
     url="https://github.com/sebdraven/suricata_misp",
     author="Sebastien Larinier @Sebdraven",
     license="Apache",
-    packages=["suricata_misp", "scripts"],
+    packages=["suricata_misp", "scripts", "utils"],
     install_requires=[
         "pymisp",
         "redis",
