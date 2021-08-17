@@ -8,7 +8,7 @@ import os.path
 from redis import StrictRedis
 
 
-class Alerts:
+class Sightings:
     def __init__(
         self,
         misp_client: MispClient,
@@ -48,9 +48,14 @@ class Alerts:
             and "metadata" in dict_message["alert"]
             and self.metadata in dict_message["alert"]["metadata"]
         ):
-            if dict_message["app_proto"] == "http":
-                hostname = dict_message["http"]["hostname"]
-                self.misp_client.add_sighting(hostname)
+            path_json = dict_message["alert"]["metadata"][self.metadata][0]
+
+            tokens = path_json.split(".")
+            attrib = {}
+            for token in tokens.pop():
+                attrib = dict_message[token]
+
+            self.misp_client.add_sighting(attrib)
 
     def __pull_redis(self):
         """Pull the alerts from the dataset of redis  and add a sighiting in MISP server"""

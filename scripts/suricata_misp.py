@@ -6,7 +6,7 @@ import os.path
 from suricata_misp.suricata_dataset import Suricata_Dataset
 from suricata_misp.misp_client import MispClient
 from suricata_misp.sched_client import Sched
-from suricata_misp.alerts import Alerts
+from suricata_misp.sightings import Sightings
 
 
 def sightings(config: str, is_redis: bool, eve_json: bool):
@@ -23,7 +23,9 @@ def sightings(config: str, is_redis: bool, eve_json: bool):
         if eve_json:
             eve_json_file = setting["eve_json"]
         client_misp = MispClient(setting["misp"]["url"], setting["misp"]["key"])
-        alerts = Alerts(client_misp, setting["metadata"], eve_json_file=eve_json_file)
+        alerts = Sightings(
+            client_misp, setting["metadata"], eve_json_file=eve_json_file
+        )
         alerts.pull(is_redis, eve_json)
 
 
