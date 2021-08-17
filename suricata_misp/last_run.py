@@ -2,6 +2,7 @@ import os.path
 from redis import StrictRedis
 
 
+
 class LastRun:
     def __init__(self, is_redis=False, tmp_file="") -> None:
         self.__get_handle(is_redis, tmp_file)

@@ -6,6 +6,7 @@ from suricata_misp.misp_client import MispClient
 from multiprocessing import Process
 import os.path
 from redis import StrictRedis
+from utils.logger import Logger
 
 
 class Sightings:
@@ -13,6 +14,7 @@ class Sightings:
         self,
         misp_client: MispClient,
         metadata: str,
+        logger: Logger,
         eve_json_file="",
         key_redis="suricata",
         db=0,
@@ -22,6 +24,7 @@ class Sightings:
         self.key_redis = key_redis
         self.metadata = metadata
         self.eve_json_file = eve_json_file
+        self.logger = logger
 
     def pull(self, is_redis: bool, eve_json: bool):
         """Pull the alerts from the alerts suricata of the dataset and add a sighiting in MISP server
@@ -73,7 +76,7 @@ class Sightings:
     def __pull_eve(self):
         """Pull the alerts from the alerts suricata of the dataset and add a sighiting in MISP server"""
         if not os.path.isfile(self.eve_json_file):
-            logging.error("%s is not file" % self.eve_json_file)
+            self.logger.log(logging.ERROR, "%s is not file" % self.eve_json_file)
             return
         for line in tailer.follow(open(self.eve_json_file)):
             dec = Process(target=self.decode_message, args=(line,))

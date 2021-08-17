@@ -1,14 +1,15 @@
 from pymisp.api import PyMISP
 from pymisp.mispevent import MISPSighting
+from utils.logger import Logger
 import logging
 
 
 class MispClient:
-    def __init__(self, url: str, key: str):
+    def __init__(self, logger: Logger, url: str, key: str):
 
         self.api = PyMISP(url=url, key=key)
+        self.logger = logger
 
-    
     def get_last_attributes(self, datefrom: str, type_attribute: str):
         """Get last attributes from the device .
 
@@ -40,4 +41,4 @@ class MispClient:
             sight = MISPSighting()
             sight.from_dict(uuid=attr["uuid"], source="IDS")
             self.api.add_sighting(sight)
-            logging.warning("add sighting to %s" % attribute_value)
+            self.logger.log(logging.INFO, "add sighting to %s" % attribute_value)
