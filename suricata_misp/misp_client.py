@@ -38,9 +38,12 @@ class MispClient:
         """
         res = self.api.search(controller="attributes", value=attribute_value)
         for attr in res["Attribute"]:
+            event = self.api.get_event(attr["event_id"])
             sight = MISPSighting()
             sight.from_dict(uuid=attr["uuid"], source="IDS")
             self.api.add_sighting(sight)
             self.logger.log(
-                "add sighting to %s" % attribute_value, level=self.logger.level
+                "add sighting to %s from event %s %s"
+                % (attribute_value, event["Event"]["id"], event["Event"]["info"]),
+                level=self.logger.level,
             )
