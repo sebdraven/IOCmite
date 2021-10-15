@@ -63,7 +63,7 @@ def import_iocs(config: str, is_redis: bool, tmp_file: bool, log: str):
 
 
 def parse_commande_line():
-    parser = argparse.ArgumentParser(description="Misp to Suricata")
+    parser = argparse.ArgumentParser(description="IOCmite")
     parser.add_argument(
         "--import",
         action="store_true",

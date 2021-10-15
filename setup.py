@@ -13,7 +13,7 @@ with open("README.md", "r", encoding="utf-8") as readme_fp:
 setup(
     name="suricata_misp",
     version="1.0",
-    description="Import indicators of MISP to dataset Suricata and add sightings in MISP on this indicators",
+    description="Import indicators of different data sources to dataset Suricata and add sightings in MISP on this indicators",
     long_description=long_description,
     long_description_content_type="text/markdown",
     classifiers=[
@@ -22,7 +22,7 @@ setup(
         "Programming Language :: Python :: 3",
     ],
     keywords="misp suricata datasets",
-    url="https://github.com/sebdraven/suricata_misp",
+    url="https://github.com/sebdraven/IOCmite",
     author="Sebastien Larinier @Sebdraven",
     license="Apache",
     packages=["suricata_misp", "scripts", "utils"],
@@ -32,7 +32,7 @@ setup(
         "tailer",
     ],
     entry_points={
-        "console_scripts": ["suricata_misp=scripts.suricata_misp:main"],
+        "console_scripts": ["iocmite=scripts.iocmite:main"],
     },
     include_package_data=True,
     python_requires=">=3.6",

@@ -10,7 +10,7 @@ This concept is detailed [here](https://suricata.readthedocs.io/en/suricata-6.0.
 
 ## Installation
 
-`git clone  https://github.com/sebdraven/suricata_misp.git `
+`git clone  https://github.com/sebdraven/iocmite.git `
 `python3 -m'venv' venv && source venv\bin\activate`
 `pip install -r requirements.txt`
 `python setup.py install`
@@ -56,15 +56,15 @@ Setup the url and key of MISP in the json file.
 ## Usage
 
 To import indicators from MISP to suricata with redis to store last run time, run the following command:
-`suricata_misp --config /path/to/json/file/settings.json --run --redis` 	
+`iocmite --config /path/to/json/file/settings.json --run --redis` 	
 
 To import indicators from MISP to suricata with temp file to store last run time, run the following command:
 
-`suricata_misp --config /path/to/json/file/settings.json --run --tmp_file`
+`iocmite --config /path/to/json/file/settings.json --run --tmp_file`
 
 To catch alert from redis and send sightings to MISP, run the following command:
-`suricata_misp --config /path/to/json/file/settings.json --redis --alerts`	
+`iocmite --config /path/to/json/file/settings.json --redis --alerts`	
 
 
 To catch alert from eve_json and send sightings to MISP, run the following command:
-`suricata_misp --config /path/to/json/file/settings.json --redis --eve_json`
+`iocmite --config /path/to/json/file/settings.json --redis --eve_json`
