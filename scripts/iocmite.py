@@ -48,14 +48,15 @@ def import_iocs(config: str, is_redis: bool, tmp_file: bool, log: str):
     logger.log("[*] Import IOCs in dataset Suricata", level=level)
     if os.path.isfile(config):
         setting = json.load(open(config))
-        client_misp = MispClient(logger, setting["misp"]["url"], setting["misp"]["key"])
-        sc_dataset = Suricata_Dataset()
+        if 'misp' in setting['sources']:
+            client_misp = MispClient(logger, setting["misp"]["url"], setting["misp"]["key"])
+            sc_dataset = Suricata_Dataset()
 
-        if tmp_file:
-            sched_run = Sched(client_misp, sc_dataset, tmp_file=setting["tmp_file"])
-        if is_redis:
-            sched_run = Sched(client_misp, sc_dataset, is_redis=True)
-        sched_run.run(setting["datasets"])
+            if tmp_file:
+                sched_run = Sched(client_misp, sc_dataset, tmp_file=setting["tmp_file"])
+            if is_redis:
+                sched_run = Sched(client_misp, sc_dataset, is_redis=True)
+            sched_run.run(setting["datasets"]["sources"]["misp"])
     else:
         logger.log("%s is not a file" % config, level=logging.ERROR)
     logger.log("[*] Import IOCs in dataset Suricata finished", level=level)
