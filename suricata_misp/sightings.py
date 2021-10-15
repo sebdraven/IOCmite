@@ -46,13 +46,9 @@ class Sightings:
             message ([strt]): [message of the alerts]
         """
         dict_message = json.loads(message)
-        if (
-            "alert" in dict_message
-            and "metadata" in dict_message["alert"]
-            and self.metadata in dict_message["alert"]["metadata"]
-        ):
-            path_json = dict_message["alert"]["metadata"][self.metadata][0]
-
+        metadata = dict_message.get("alert",{}).get("metadata",{})
+        if self.metadata in metadata:
+            path_json = metadata[self.metadata][0]
             tokens = path_json.split(".")
             attrib = {}
             attrib = dict_message[tokens[0]]
