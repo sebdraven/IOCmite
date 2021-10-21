@@ -47,7 +47,7 @@ Download the last release of Suricata [here](https://www.openinfosecfoundation.o
 }`
 
 
-`alert http any any -> any any (msg: "domains TA"; http.host; dataset:isset,dbl; sid:234;threshold: type threshold, track by_rule, count 1, seconds 1 ;rev:1; metadata:dbl detected;)`
+`alert http any any -> any any (msg: "domains TA"; http.host; dataset:isset,dbl; sid:234;threshold: type threshold, track by_rule, count 1, seconds 1 ;rev:1; metadata:sightings http.hostname;)`
 
 The metadata term in the rule suricata is the same in the setting json file.
 
