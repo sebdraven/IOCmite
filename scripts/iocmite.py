@@ -32,7 +32,7 @@ def sightings(settings: dict, is_redis: bool, eve_json: bool, log: str):
     level = logging.getLevelName(log)
     logger = Logger(level=level)
     logger.log("[-] Parse alerts to add sigthings in MISP", level=level)
-    print(settings)
+    
     if eve_json:
         eve_json_file = settings["eve_json"]
         if not os.path.isfile(eve_json_file):
