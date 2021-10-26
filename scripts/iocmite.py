@@ -42,7 +42,7 @@ def sightings(config: dict, is_redis: bool, eve_json: bool, log: str):
     alerts.pull(is_redis, eve_json)
  
 
-def import_iocs(setting: dict, is_redis: bool, tmp_file: bool, log: str):
+def import_iocs(setting: dict, is_redis: bool, is_tmp_file: bool, log: str):
     """Download the last indicator from the the last run to store in a dataset Suricata.
 
     Args:
@@ -54,16 +54,25 @@ def import_iocs(setting: dict, is_redis: bool, tmp_file: bool, log: str):
     logger = Logger(level=level)
     logger.log("[*] Import IOCs in dataset Suricata", level=level)
 
-    if 'misp' in setting['sources']:
-        client_misp = MispClient(logger, setting["misp"]["url"], setting["misp"]["key"])
+    
+    url_misp = setting.get("misp", {}).get("url", "")
+    key_misp = setting.get("misp", {}).get("key", "")
+    if url_misp and key_misp:
+        client_misp = MispClient(logger, url_misp, key_misp)
         sc_dataset = Suricata_Dataset()
-
-        if tmp_file:
-            sched_run = Sched(client_misp, sc_dataset, tmp_file=setting["tmp_file"])
+        
+        if is_tmp_file:
+            tmp_file = setting.get("tmp_file", "")
+            if tmp_file:
+                sched_run = Sched(client_misp, sc_dataset, tmp_file=tmp_file)
         if is_redis:
             sched_run = Sched(client_misp, sc_dataset, is_redis=True)
-        sched_run.run(setting["datasets"]["sources"]["misp"])
-    
+        datasets = setting.get("sources", {}).get("misp", {}).get("datasets", "")
+        if datasets:
+            sched_run.run(datasets)
+        else:
+            logger.log("[-] No dataset to import", level=level)
+            exit(1)    
     logger.log("[*] Import IOCs in dataset Suricata finished", level=level)
 
 def parse_commande_line():
