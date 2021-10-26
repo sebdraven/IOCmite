@@ -3,6 +3,8 @@ import argparse
 import json
 import logging
 import os.path
+from idstools import rule
+from utils import logger
 from utils.logger import Logger
 from suricata_misp.suricata_dataset import Suricata_Dataset
 from suricata_misp.misp_client import MispClient
@@ -19,6 +21,33 @@ def config(config: str):
         return json.load(open(config))
     else:
         return False
+
+def check_metadata(settings:dict, logs:str):
+    """Check if the metadata is valid.
+
+    Args:
+        settings (str): [file of the configuration]
+    """
+    rule_suricata = settings.get("rule","")
+
+    level = logging.getLevelName(logs)
+    logger = Logger(level=level)
+
+    if not os.path.isfile(rule_suricata):
+        logger.log("[-] Suricata rule file is missing", level=level)
+        exit(1)
+    rule_dict = rule.parse_file(rule_suricata)[0]
+    metadata_rule = rule_dict.get("metadata", {})
+    metadata = settings.get("metadata", {})
+    
+    if metadata_rule and metadata:
+        for m in metadata_rule:
+            if metadata in m:
+                return True
+        else:
+            return False
+    
+
 
 def sightings(settings: dict, is_redis: bool, eve_json: bool, log: str):
     """parse alerts Suricata in redis or eve_json to add sightings in MISP.
@@ -117,10 +146,16 @@ def parse_commande_line():
 def main():
     args = parse_commande_line()
     settings = None
+    
     if args.config:
         settings = config(args.config)
     else:
         print("[-] Configuration file is missing")
+        return exit(1)
+    
+    metadata_is_valid = check_metadata(settings, args.log)
+    if not metadata_is_valid:
+        print("[-] Metadata is not set correctly")
         return exit(1)
 
     if args.import_ioc and settings:
