@@ -36,7 +36,12 @@ def check_metadata(settings:dict, logs:str):
     if not os.path.isfile(rule_suricata):
         logger.log("[-] Suricata rule file is missing", level=level)
         exit(1)
-    rule_dict = rule.parse_file(rule_suricata)[0]
+    rule_dict = {}
+    try:
+        rule_dict = rule.parse_file(rule_suricata)[0]
+    except Exception as e:
+        logger.log("[-] Suricata rule file is not valid", level=level)
+        exit(1)
     metadata_rule = rule_dict.get("metadata", {})
     metadata = settings.get("metadata", {})
     
