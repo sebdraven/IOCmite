@@ -1,7 +1,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-"""Packaging tool for the Yeti python bindings and CLI utility."""
+"""Packaging tool for IOCMite"""
 
 from setuptools import setup
 from setuptools import find_packages
@@ -30,6 +30,7 @@ setup(
         "pymisp",
         "redis",
         "tailer",
+        "idstools"
     ],
     entry_points={
         "console_scripts": ["iocmite=scripts.iocmite:main"],
