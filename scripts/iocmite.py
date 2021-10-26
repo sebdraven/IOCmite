@@ -20,7 +20,7 @@ def config(config: str):
     else:
         return False
 
-def sightings(config: dict, is_redis: bool, eve_json: bool, log: str):
+def sightings(settings: dict, is_redis: bool, eve_json: bool, log: str):
     """parse alerts Suricata in redis or eve_json to add sightings in MISP.
 
     Args:
@@ -31,18 +31,29 @@ def sightings(config: dict, is_redis: bool, eve_json: bool, log: str):
     eve_json_file = ""
     level = logging.getLevelName(log)
     logger = Logger(level=level)
-    logger.log("[*] Parse alerts to add sigthings in MISP", level=level)
-
+    logger.log("[-] Parse alerts to add sigthings in MISP", level=level)
+    print(settings)
     if eve_json:
-        eve_json_file = config["eve_json"]
-    client_misp = MispClient(logger, config["misp"]["url"], config["misp"]["key"])
-    alerts = Sightings(
-        client_misp, config["metadata"], logger, eve_json_file=eve_json_file
-    )
-    alerts.pull(is_redis, eve_json)
- 
+        eve_json_file = settings["eve_json"]
+        if not os.path.isfile(eve_json_file):
+            logger.log("[-] Eve json file is missing", level=level)
+            exit(1)
+    
+    mips_url = settings.get("misp", {}).get("url", "")
+    misp_key = settings.get("misp", {}).get("key", "")
+    
+    if mips_url and misp_key:
+            client_misp = MispClient(logger, mips_url,misp_key)
+            alerts = Sightings(
+                client_misp, settings["metadata"], logger, eve_json_file=eve_json_file
+            )
+            alerts.pull(is_redis, eve_json_file)
+    else:
+        logger.log("[-] MISP url or key is missing", level=level)
+        exit(1)
+        
 
-def import_iocs(setting: dict, is_redis: bool, is_tmp_file: bool, log: str):
+def import_iocs(settings: dict, is_redis: bool, is_tmp_file: bool, log: str):
     """Download the last indicator from the the last run to store in a dataset Suricata.
 
     Args:
@@ -52,28 +63,28 @@ def import_iocs(setting: dict, is_redis: bool, is_tmp_file: bool, log: str):
     """
     level = logging.getLevelName(log)
     logger = Logger(level=level)
-    logger.log("[*] Import IOCs in dataset Suricata", level=level)
+    logger.log("[-] Import IOCs in dataset Suricata", level=level)
 
     
-    url_misp = setting.get("misp", {}).get("url", "")
-    key_misp = setting.get("misp", {}).get("key", "")
+    url_misp = settings.get("misp", {}).get("url", "")
+    key_misp = settings.get("misp", {}).get("key", "")
     if url_misp and key_misp:
         client_misp = MispClient(logger, url_misp, key_misp)
         sc_dataset = Suricata_Dataset()
         
         if is_tmp_file:
-            tmp_file = setting.get("tmp_file", "")
+            tmp_file = settings.get("tmp_file", "")
             if tmp_file:
                 sched_run = Sched(client_misp, sc_dataset, tmp_file=tmp_file)
         if is_redis:
             sched_run = Sched(client_misp, sc_dataset, is_redis=True)
-        datasets = setting.get("sources", {}).get("misp", {}).get("datasets", "")
+        datasets = settings.get("sources", {}).get("misp", {}).get("datasets", "")
         if datasets:
             sched_run.run(datasets)
         else:
             logger.log("[-] No dataset to import", level=level)
             exit(1)    
-    logger.log("[*] Import IOCs in dataset Suricata finished", level=level)
+    logger.log("[-] Import IOCs in dataset Suricata finished", level=level)
 
 def parse_commande_line():
     parser = argparse.ArgumentParser(description="IOCmite")
@@ -105,17 +116,17 @@ def parse_commande_line():
 
 def main():
     args = parse_commande_line()
-    setting = None
+    settings = None
     if args.config:
-        setting = config(args.config)
+        settings = config(args.config)
     else:
         print("[-] Configuration file is missing")
         return exit(1)
 
-    if args.import_ioc:
-        import_iocs(setting, args.redis, args.tmp_file, args.log)
-    if args.sightings and args.config:
-        sightings(setting, args.redis, args.eve_json, args.log)
+    if args.import_ioc and settings:
+        import_iocs(settings, args.redis, args.tmp_file, args.log)
+    if args.sightings and args.config and settings:
+        sightings(settings, args.redis, args.eve_json, args.log)
 
 
 if __name__ == "__main__":

@@ -43,7 +43,7 @@ class MispClient:
             sight.from_dict(uuid=attr["uuid"], source="IDS")
             self.api.add_sighting(sight)
             self.logger.log(
-                "add sighting to %s from event %s %s"
+                "add sighting to %s from event %s title: %s"
                 % (attribute_value, event["Event"]["id"], event["Event"]["info"]),
                 level=self.logger.level,
             )
