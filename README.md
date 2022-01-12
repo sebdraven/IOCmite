@@ -24,30 +24,31 @@ Download the last release of Suricata [here](https://www.openinfosecfoundation.o
         "url": "",
         "key": ""
     },
-    "eve_json": "/var/log/suricata/eve.json",
-    "metadata": "dbl",
-    "datasets": {
+        "eve_json": "/var/log/suricata/eve.json",
+        "metadata": "sightings",
+        "tmp_file": "/tmp/last_run",
+        "datasets": {
         "ip-src": {
-            "name": "ips",
-            "type": "string"
+        "name": "ips",
+        "type": "string"
         },
         "ip-dst": {
-            "name": "ips",
-            "type": "string"
+        "name": "ips",
+        "type": "string"
         },
         "hostname": {
-            "name": "dbl",
-            "type": "string"
+        "name": "dbl",
+        "type": "string"
         },
         "domain": {
-            "name": "dbl",
-            "type": "string"
+        "name": "dbl",
+        "type": "string"
         }
-    }
+  }
 }`
 
 
-`alert http any any -> any any (msg: "domains TA"; http.host; dataset:isset,dbl; sid:234;threshold: type threshold, track by_rule, count 1, seconds 1 ;rev:1; metadata:dbl detected;)`
+`alert http any any -> any any (msg: "domains TA"; http.host; dataset:isset,dbl; sid:234;threshold: type threshold, track by_rule, count 1, seconds 1 ;rev:1; metadata:sightings http.hostname;)`
 
 The metadata term in the rule suricata is the same in the setting json file.
 

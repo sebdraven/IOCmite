@@ -1,7 +1,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-"""Packaging tool for the Yeti python bindings and CLI utility."""
+"""Packaging tool for IOCMite"""
 
 from setuptools import setup
 from setuptools import find_packages
@@ -11,7 +11,7 @@ with open("README.md", "r", encoding="utf-8") as readme_fp:
     long_description = readme_fp.read()
 
 setup(
-    name="suricata_misp",
+    name="IOCMite",
     version="1.0",
     description="Import indicators of different data sources to dataset Suricata and add sightings in MISP on this indicators",
     long_description=long_description,
@@ -30,6 +30,7 @@ setup(
         "pymisp",
         "redis",
         "tailer",
+        "idstools"
     ],
     entry_points={
         "console_scripts": ["iocmite=scripts.iocmite:main"],
