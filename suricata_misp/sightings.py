@@ -40,13 +40,13 @@ class Sightings:
 
     def decode_message(self, message: str):
         """Decode a JSON message received from alerts suricata of the dataset
-        and add a sighiting in MISP server
+        and add a sighting in MISP server
 
         Args:
             message ([strt]): [message of the alerts]
         """
         dict_message = json.loads(message)
-        metadata = dict_message.get("alert",{}).get("metadata",{})
+        metadata = dict_message.get("alert", {}).get("metadata", {})
         if self.metadata in metadata:
             path_json = metadata[self.metadata][0]
             tokens = path_json.split(".")
