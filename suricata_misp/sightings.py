@@ -55,8 +55,16 @@ class Sightings:
                 self.__decode_http(dict_message, tokens)
             elif proto == "dns":
                 self.__decode_dns(dict_message, tokens)
+            elif proto == "tls":
+                self.__decode_tls(dict_message, tokens)
 
     def __decode_http(self, dict_message: dict, tokens: list):
+        attrib = dict_message[tokens[0]]
+        for token in tokens[1:]:
+            attrib = attrib[token]
+        self.misp_client.add_sighting(attrib)
+
+    def __decode_tls(self, dict_message: dict, tokens: list):
         attrib = dict_message[tokens[0]]
         for token in tokens[1:]:
             attrib = attrib[token]
