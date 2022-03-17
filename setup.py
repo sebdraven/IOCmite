@@ -11,7 +11,7 @@ with open("README.md", "r", encoding="utf-8") as readme_fp:
     long_description = readme_fp.read()
 
 setup(
-    name="IOCMite",
+    name="iocmite",
     version="1.0",
     description="Import indicators of different data sources to dataset Suricata and add sightings in MISP on this indicators",
     long_description=long_description,
@@ -26,12 +26,7 @@ setup(
     author="Sebastien Larinier @Sebdraven",
     license="Apache",
     packages=["suricata_misp", "scripts", "utils"],
-    install_requires=[
-        "pymisp",
-        "redis",
-        "tailer",
-        "idstools"
-    ],
+    install_requires=["pymisp", "redis", "tailer", "idstools"],
     entry_points={
         "console_scripts": ["iocmite=scripts.iocmite:main"],
     },
