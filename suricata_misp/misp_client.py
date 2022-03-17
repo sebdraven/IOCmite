@@ -26,6 +26,9 @@ class MispClient:
             to_ids=1,
             type_attribute=type_attribute,
         )
+        self.logger.log(
+            "[-] get %s attributes" % len(res["Attribute"]), level=self.logger.level
+        )
         if res:
             for r in res["Attribute"]:
                 yield r

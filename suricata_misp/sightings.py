@@ -50,11 +50,24 @@ class Sightings:
         if self.metadata in metadata:
             path_json = metadata[self.metadata][0]
             tokens = path_json.split(".")
-            attrib = {}
-            attrib = dict_message[tokens[0]]
-            for token in tokens[1:]:
-                attrib = attrib[token]
+            proto = tokens[0]
+            if proto == "http":
+                self.__decode_http(dict_message, tokens)
+            elif proto == "dns":
+                self.__decode_dns(dict_message, tokens)
 
+    def __decode_http(self, dict_message: dict, tokens: list):
+        attrib = dict_message[tokens[0]]
+        for token in tokens[1:]:
+            attrib = attrib[token]
+        self.misp_client.add_sighting(attrib)
+
+    def __decode_dns(self, dict_message: dict, tokens: list):
+        dns_message = dict_message[tokens[0]]
+        query = dns_message[tokens[1]]
+        print(query)
+        for q in query:
+            attrib = q[tokens[2]]
             self.misp_client.add_sighting(attrib)
 
     def __pull_redis(self):
