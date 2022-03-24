@@ -40,19 +40,20 @@ def check_metadata(settings: dict, logs: str):
         return False
     rule_dict = {}
     try:
-        rule_dict = rule.parse_file(rule_suricata)[0]
+        rules = rule.parse_file(rule_suricata)
     except Exception as e:
-        logger.log("[-] Suricata rule file is not valid", level=level)
+        logger.log("[-] Suricata rule file is not valid {}".format(e), level=level)
         return False
-    metadata_rule = rule_dict.get("metadata", {})
-    metadata = settings.get("metadata", {})
 
-    if metadata_rule and metadata:
-        for m in metadata_rule:
-            if metadata in m:
-                return True
-        else:
-            return False
+    for r in rules:
+        metadata_rule = r.get("metadata", {})
+        metadata = settings.get("metadata", {})
+
+        if metadata_rule and metadata:
+            for m in metadata_rule:
+                if metadata not in m:
+                    return False
+    return True
 
 
 def sightings(settings: dict, is_redis: bool, eve_json: bool, log: str):
