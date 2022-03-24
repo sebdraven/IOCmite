@@ -1,17 +1,16 @@
 import logging
 
 
-class Logger:
-    def __init__(self, level=logging.INFO) -> None:
-        self.logger = logging.getLogger("suricata-misp")
-        self.level = level
-        self.formatter = logging.Formatter(
-            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-        )
-        self.ch = logging.StreamHandler()
-        self.ch.setLevel(level)
-        self.ch.setFormatter(self.formatter)
-        self.logger.addHandler(self.ch)
+def get_logger(level: str):
 
-    def log(self, message, level=logging.INFO):
-        self.logger.log(level, message)
+    logger = logging.getLogger("suricata-misp")
+    level_log = logging.getLevelName(level)
+    formatter = logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    )
+    ch = logging.StreamHandler()
+    ch.setLevel(level_log)
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
+
+    return logger

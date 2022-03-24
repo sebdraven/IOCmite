@@ -6,7 +6,7 @@ from suricata_misp.misp_client import MispClient
 from multiprocessing import Process
 import os.path
 from redis import StrictRedis
-from utils.logger import Logger
+from logging import Logger
 
 
 class Sightings:

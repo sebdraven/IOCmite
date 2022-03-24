@@ -4,12 +4,12 @@ import json
 import logging
 import os.path
 from idstools import rule
-from utils import logger
-from utils.logger import Logger
+from utils.logger import get_logger
 from suricata_misp.suricata_dataset import Suricata_Dataset
 from suricata_misp.misp_client import MispClient
 from suricata_misp.sched_client import Sched
 from suricata_misp.sightings import Sightings
+from logging import Logger
 
 
 def config(config: str):
@@ -24,7 +24,7 @@ def config(config: str):
         return False
 
 
-def check_metadata(settings: dict, logs: str):
+def check_metadata(settings: dict, log: Logger):
     """Check if the metadata is valid.
 
     Args:
@@ -32,17 +32,14 @@ def check_metadata(settings: dict, logs: str):
     """
     rule_suricata = settings.get("rule", "")
 
-    level = logging.getLevelName(logs)
-    logger = Logger(level=level)
-
     if not os.path.isfile(rule_suricata):
-        logger.log("[-] Suricata rule file is missing", level=level)
+        log.log("[-] Suricata rule file is missing")
         return False
     rule_dict = {}
     try:
         rules = rule.parse_file(rule_suricata)
     except Exception as e:
-        logger.log("[-] Suricata rule file is not valid {}".format(e), level=level)
+        log.error("[-] Suricata rule file is not valid {}".format(e))
         return False
 
     for r in rules:
@@ -56,7 +53,7 @@ def check_metadata(settings: dict, logs: str):
     return True
 
 
-def sightings(settings: dict, is_redis: bool, eve_json: bool, log: str):
+def sightings(settings: dict, is_redis: bool, eve_json: bool, log: Logger):
     """parse alerts Suricata in redis or eve_json to add sightings in MISP.
 
     Args:
@@ -65,31 +62,30 @@ def sightings(settings: dict, is_redis: bool, eve_json: bool, log: str):
         eve_json (bool): [if eve json is used to store alerts]
     """
     eve_json_file = ""
-    level = logging.getLevelName(log)
-    logger = Logger(level=level)
-    logger.log("[-] Parse alerts to add sigthings in MISP", level=level)
+
+    log.info("[-] Parse alerts to add sigthings in MISP")
 
     if eve_json:
         eve_json_file = settings["eve_json"]
         if not os.path.isfile(eve_json_file):
-            logger.log("[-] Eve json file is missing", level=level)
+            log.error("[-] Eve json file is missing")
             exit(1)
 
     mips_url = settings.get("misp", {}).get("url", "")
     misp_key = settings.get("misp", {}).get("key", "")
 
     if mips_url and misp_key:
-        client_misp = MispClient(logger, mips_url, misp_key)
+        client_misp = MispClient(log, mips_url, misp_key)
         alerts = Sightings(
-            client_misp, settings["metadata"], logger, eve_json_file=eve_json_file
+            client_misp, settings["metadata"], log, eve_json_file=eve_json_file
         )
         alerts.pull(is_redis, eve_json_file)
     else:
-        logger.log("[-] MISP url or key is missing", level=level)
+        log.error("[-] MISP url or key is missing")
         exit(1)
 
 
-def import_iocs(settings: dict, is_redis: bool, is_tmp_file: bool, log: str):
+def import_iocs(settings: dict, is_redis: bool, is_tmp_file: bool, log: Logger):
     """Download the last indicator from the the last run to store in a dataset Suricata.
 
     Args:
@@ -97,32 +93,31 @@ def import_iocs(settings: dict, is_redis: bool, is_tmp_file: bool, log: str):
         is_redis (str): [if redis is used to store the last run]
         tmp_file (str): [if a temorary file is used to store the last run]
     """
-    level = logging.getLevelName(log)
-    logger = Logger(level=level)
-    logger.log("[-] Import IOCs in dataset Suricata", level=level)
+
+    log.info("[-] Import IOCs in dataset Suricata")
 
     url_misp = settings.get("misp", {}).get("url", "")
     key_misp = settings.get("misp", {}).get("key", "")
     if url_misp and key_misp:
-        client_misp = MispClient(logger, url_misp, key_misp)
+        client_misp = MispClient(log, url_misp, key_misp)
         sc_dataset = Suricata_Dataset()
 
         if is_tmp_file:
             tmp_file = settings.get("tmp_file", "")
-            logger.log("[-] tmp file {}".format(tmp_file), level=level)
+            log.info("[-] tmp file {}".format(tmp_file))
             if tmp_file:
                 sched_run = Sched(client_misp, sc_dataset, tmp_file=tmp_file)
         if is_redis:
-            logger.log("[-] redis setup", level=level)
+            log.info("[-] redis setup")
             sched_run = Sched(client_misp, sc_dataset, is_redis=True)
         datasets = settings.get("datasets", {}).get("sources", {}).get("misp", "")
-        logger.log("[-] datasets {}".format(datasets), level=level)
+        log.info("[-] datasets {}".format(datasets))
         if datasets:
             sched_run.run(datasets)
         else:
-            logger.log("[-] No dataset to import", level=level)
+            log.info("[-] No dataset to import")
             exit(1)
-    logger.log("[-] Import IOCs in dataset Suricata finished", level=level)
+    log.info("[-] Import IOCs in dataset Suricata finished")
 
 
 def parse_commande_line():
@@ -162,7 +157,7 @@ def main():
     else:
         print("[-] Configuration file is missing")
         return exit(1)
-
+    logger = get_logger(args.log)
     metadata_is_valid = check_metadata(settings, args.log)
     if not metadata_is_valid:
         print("[-] Metadata is not set correctly")
@@ -171,9 +166,9 @@ def main():
     print("[+] Start IOCmite")
     print("[+] settings: {}".format(settings))
     if args.import_ioc and settings:
-        import_iocs(settings, args.redis, args.tmp_file, args.log)
+        import_iocs(settings, args.redis, args.tmp_file, logger)
     if args.sightings and args.config and settings:
-        sightings(settings, args.redis, args.eve_json, args.log)
+        sightings(settings, args.redis, args.eve_json, logger)
 
 
 if __name__ == "__main__":

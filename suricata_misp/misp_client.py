@@ -1,7 +1,6 @@
 from pymisp.api import PyMISP
 from pymisp.mispevent import MISPSighting
-from utils.logger import Logger
-import logging
+from logging import Logger
 
 
 class MispClient:
@@ -26,9 +25,7 @@ class MispClient:
             to_ids=1,
             type_attribute=type_attribute,
         )
-        self.logger.log(
-            "[-] get %s attributes" % len(res["Attribute"]), level=self.logger.level
-        )
+        self.logger.info("[-] get %s attributes" % len(res["Attribute"]))
         if res:
             for r in res["Attribute"]:
                 yield r
@@ -45,8 +42,7 @@ class MispClient:
             sight = MISPSighting()
             sight.from_dict(uuid=attr["uuid"], source="IDS")
             self.api.add_sighting(sight)
-            self.logger.log(
+            self.logger.info(
                 "add sighting to %s from event %s title: %s"
                 % (attribute_value, event["Event"]["id"], event["Event"]["info"]),
-                level=self.logger.level,
             )
