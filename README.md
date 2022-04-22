@@ -32,27 +32,32 @@ tar xvfz suricata-6.0.x && cd suricata-6.0.x/python && python setup install
         "url": "",
         "key": ""
     },
-        "eve_json": "/var/log/suricata/eve.json",
-        "metadata": "sightings",
-        "tmp_file": "/tmp/last_run",
-        "datasets": {
-        "ip-src": {
-        "name": "ips",
-        "type": "string"
-        },
-        "ip-dst": {
-        "name": "ips",
-        "type": "string"
-        },
-        "hostname": {
-        "name": "dbl",
-        "type": "string"
-        },
-        "domain": {
-        "name": "dbl",
-        "type": "string"
+    "eve_json": "/var/log/suricata/eve.json",
+    "metadata": "sightings",
+    "tmp_file": "/tmp/last_run",
+    "rule": "",
+    "datasets": {
+        "sources": {
+            "misp": {
+                "ip-src": {
+                    "name": "ips",
+                    "type": "string"
+                },
+                "ip-dst": {
+                    "name": "ips",
+                    "type": "string"
+                },
+                "hostname": {
+                    "name": "dbl",
+                    "type": "string"
+                },
+                "domain": {
+                    "name": "dbl",
+                    "type": "string"
+                }
+            }
         }
-  }
+    }
 }
 ```
 
