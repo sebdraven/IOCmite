@@ -1,1 +1,1 @@
-alert dns any any -> any any (msg: "domains TA"; dns.query; dataset:isset,dbl; sid:234;threshold: type threshold, track by_rule, count 1, seconds 1 ;rev:1; metadata:sightings dns.query.rrname;)
+alert dns any any -> any any (msg: "domains TA"; dns.query; dataset:isset,dbl; sid:1100000; threshold: type threshold, track by_rule, count 1, seconds 1; rev:1; metadata:sightings dns.query.rrname;)
