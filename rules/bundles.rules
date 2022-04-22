@@ -1,0 +1,3 @@
+alert dns any any -> any any (msg: "domains TA (DNS)"; dns.query; dataset:isset,dbl, type string, state /var/lib/suricata/data/dbl.lst; sid:1100000; rev:1; metadata:sightings dns.query.rrname;)
+alert http any any -> any any (msg: "domains TA (HTTP)"; http.host; dataset:isset,dbl, type string, state /var/lib/suricata/data/dbl.lst; sid:1100001; rev:1; metadata:sightings http.hostname;)
+alert tls any any -> any any (msg: "domains TA (TLS)"; tls.sni; dataset:isset,dbl, type string, state /var/lib/suricata/data/dbl.lst; sid:1100002; rev:1; metadata:sightings tls.sni;)

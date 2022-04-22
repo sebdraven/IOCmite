@@ -1,0 +1,1 @@
+alert tls any any -> any any (msg: "domains TA (TLS)"; tls.sni; dataset:isset,dbl, type string, state /var/lib/suricata/data/dbl.lst; sid:1100002; rev:1; metadata:sightings tls.sni;)

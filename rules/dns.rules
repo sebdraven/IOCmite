@@ -1,0 +1,1 @@
+alert dns any any -> any any (msg: "domains TA (DNS)"; dns.query; dataset:isset,dbl, type string, state /var/lib/suricata/data/dbl.lst; sid:1100000; rev:1; metadata:sightings dns.query.rrname;)
