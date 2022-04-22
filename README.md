@@ -56,12 +56,14 @@ tar xvfz suricata-6.0.x && cd suricata-6.0.x/python && python setup install
 }
 ```
 
+Sample signatures are provided in the rules directory. For example, the one matchine on HTTP hostname is:
 
 ```
-alert http any any -> any any (msg: "domains TA"; http.host; dataset:isset,dbl; sid:234;threshold: type threshold, track by_rule, count 1, seconds 1 ;rev:1; metadata:sightings http.hostname;)
+alert http any any -> any any (msg: "domains TA (HTTP)"; http.host; dataset:isset,dbl, type string, state /var/lib/suricata/data/dbl.lst; sid:1100001; rev:1; metadata:sightings http.hostname;)
 ```
 
-The metadata term in the rule suricata is the same in the setting JSON file.
+The metadata term in the rule suricata is the same in the setting JSON file. The signatures suppose a standard system wide Suricata installation, you will need to change the path in the `state`
+option in the `dataset` keyword if ever you don't have a standard installation.
 
 Setup the url and key of MISP in the json file.
 
