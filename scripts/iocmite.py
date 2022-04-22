@@ -33,7 +33,7 @@ def check_metadata(settings: dict, log: Logger):
     rule_suricata = settings.get("rule", "")
 
     if not os.path.isfile(rule_suricata):
-        log.log("[-] Suricata rule file is missing")
+        log.error("[-] Suricata rule file is missing")
         return False
     rule_dict = {}
     try:
@@ -158,13 +158,16 @@ def main():
         print("[-] Configuration file is missing")
         return exit(1)
     logger = get_logger(args.log)
-    metadata_is_valid = check_metadata(settings, args.log)
+    metadata_is_valid = check_metadata(settings, logger)
     if not metadata_is_valid:
         print("[-] Metadata is not set correctly")
         return exit(1)
     print("[+] Metadata is set correctly")
     print("[+] Start IOCmite")
-    print("[+] settings: {}".format(settings))
+    if args.import_ioc:
+        import_iocs(settings, args.redis, args.tmp_file, logger)
+    if args.sightings:
+        sightings(settings, args.redis, args.eve_json, logger)
     if args.import_ioc and settings:
         import_iocs(settings, args.redis, args.tmp_file, logger)
     if args.sightings and args.config and settings:
