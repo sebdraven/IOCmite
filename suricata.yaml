@@ -972,15 +972,15 @@ app-layer:
 asn1-max-frames: 256
 
 # Datasets default settings
-datasets:
-    dbl:
-        type: string
-        state: /home/sebdraven/dbl.lst
-        memcap: 100mb
-    ips:
-        type: string
-        state: /home/sebdraven/ips.lst
-        memcap: 100mb
+#datasets:
+#   dbl:
+#        type: string
+#        state: /home/sebdraven/dbl.lst
+#        memcap: 100mb
+#    ips:
+#        type: string
+#       state: /home/sebdraven/ips.lst
+#        memcap: 100mb
 #   # Default fallback memcap and hashsize values for datasets in case these
 #   # were not explicitly defined.
 #   defaults:
