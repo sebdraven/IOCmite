@@ -77,13 +77,13 @@ Setup the url and key of MISP in the json file.
 To import indicators from MISP to suricata with redis to store last run time, run the following command:
 
 ```bash
-iocmite --config /path/to/json/file/settings.json --run --redis
+iocmite --config /path/to/json/file/settings.json --import --redis
 ```
 
 To import indicators from MISP to suricata with temp file to store last run time, run the following command:
 
 ```bash
-iocmite --config /path/to/json/file/settings.json --run --tmp_file
+iocmite --config /path/to/json/file/settings.json --import --tmp_file
 ```
 
 To catch alert from redis and send sightings to MISP, run the following command:
