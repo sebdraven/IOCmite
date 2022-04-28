@@ -4,6 +4,7 @@
         "key": ""
     },
     "eve_json": "/var/log/suricata/eve.json",
+    "suricata_socket": "/var/run/suricata/suricata-command.socket",
     "metadata": "sightings",
     "tmp_file": "/tmp/last_run",
     "rule": "path_of_your_rule",
