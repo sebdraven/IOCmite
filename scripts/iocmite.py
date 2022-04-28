@@ -100,7 +100,8 @@ def import_iocs(settings: dict, is_redis: bool, is_tmp_file: bool, log: Logger):
     key_misp = settings.get("misp", {}).get("key", "")
     if url_misp and key_misp:
         client_misp = MispClient(log, url_misp, key_misp)
-        sc_dataset = Suricata_Dataset()
+        suri_socket = settings.get("suricata_socket", "/var/run/suricata/suricata-command.socket")
+        sc_dataset = Suricata_Dataset(path_socket=suri_socket)
 
         if is_tmp_file:
             tmp_file = settings.get("tmp_file", "")
