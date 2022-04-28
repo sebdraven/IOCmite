@@ -74,6 +74,16 @@ Setup the url and key of MISP in the json file.
 
 ## Usage
 
+### Principles
+
+To synchronize the IOCs in MISP with Suricata datasets, you need to run an import command periodically.
+You can use a cron task to do so.
+
+To send sightings back to MISP, you need to run a IOCmite instance that will wait for new events
+and publish sightings as soon as they came.
+
+### Example commands
+
 To import indicators from MISP to suricata with redis to store last run time, run the following command:
 
 ```bash
