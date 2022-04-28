@@ -9,8 +9,8 @@ def get_logger(level: str):
         "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     )
     ch = logging.StreamHandler()
-    ch.setLevel(level_log)
     ch.setFormatter(formatter)
     logger.addHandler(ch)
+    logger.setLevel(level_log)
 
     return logger
