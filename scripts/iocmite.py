@@ -153,18 +153,18 @@ def main():
     args = parse_commande_line()
     settings = None
 
+    logger = get_logger(args.log)
     if args.config:
         settings = config(args.config)
     else:
-        print("[-] Configuration file is missing")
+        logger.error("[-] Configuration file is missing")
         return exit(1)
-    logger = get_logger(args.log)
     metadata_is_valid = check_metadata(settings, logger)
     if not metadata_is_valid:
-        print("[-] Metadata is not set correctly")
+        logger.error("[-] Metadata is not set correctly")
         return exit(1)
-    print("[+] Metadata is set correctly")
-    print("[+] Start IOCmite")
+    logger.debug("[+] Metadata is set correctly")
+    logger.info("[+] Start IOCmite")
     if args.import_ioc:
         import_iocs(settings, args.redis, args.tmp_file, logger)
     if args.sightings:
