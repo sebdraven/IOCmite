@@ -5,8 +5,8 @@
     },
     "eve_json": "/var/log/suricata/eve.json",
     "metadata": "sightings",
-    "rule": "path_of_your_rule",
     "tmp_file": "/tmp/last_run",
+    "rule": "path_of_your_rule",
     "sources": {
         "misp": {
             "datasets": {
@@ -23,6 +23,10 @@
                     "type": "string"
                 },
                 "domain": {
+                    "name": "dbl",
+                    "type": "string"
+                },
+                "user-agent": {
                     "name": "dbl",
                     "type": "string"
                 }
