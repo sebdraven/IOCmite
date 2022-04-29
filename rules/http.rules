@@ -1,1 +1,2 @@
 alert http any any -> any any (msg: "domains TA (HTTP)"; http.host; dataset:isset,dbl, type string, state /var/lib/suricata/data/dbl.lst; sid:1100001; rev:1; metadata:sightings http.hostname;)
+alert http any any -> any any (msg: "agent TA (HTTP)"; http.user_agent; dataset:isset,uabl, type string, state /var/lib/suricata/data/uabl.lst; sid:1100003; rev:1; metadata:sightings http.http_user_agent;)
