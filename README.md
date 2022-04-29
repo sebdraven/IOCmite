@@ -54,7 +54,12 @@ tar xvfz suricata-6.0.x && cd suricata-6.0.x/python && python setup install
                 "domain": {
                     "name": "dbl",
                     "type": "string"
+                },
+                "user-agent": {
+                    "name": "uabl",
+                    "type": "string"
                 }
+                
             }
         }
     }
