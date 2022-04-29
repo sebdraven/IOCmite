@@ -28,7 +28,7 @@
                     "type": "string"
                 },
                 "user-agent": {
-                    "name": "dbl",
+                    "name": "uabl",
                     "type": "string"
                 }
             }
