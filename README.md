@@ -104,12 +104,12 @@ iocmite --config /path/to/json/file/settings.json --import --tmp_file
 To catch alert from redis and send sightings to MISP, run the following command:
 
 ```bash
-iocmite --config /path/to/json/file/settings.json --redis --alerts
+iocmite --config /path/to/json/file/settings.json --redis --sightings
 ```
 
 
 To catch alert from eve_json and send sightings to MISP, run the following command:
 
 ```bash
-iocmite --config /path/to/json/file/settings.json --redis --eve_json
+iocmite --config /path/to/json/file/settings.json --eve_json --sightings
 ```
