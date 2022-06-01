@@ -31,7 +31,7 @@ def check_metadata(settings: dict, log: Logger):
         settings (str): [file of the configuration]
     """
     rule_suricata = settings.get("rule", "")
-
+    log.info("[-] Rule Suricata {}".format(rule_suricata))
     if not os.path.isfile(rule_suricata):
         log.error("[-] Suricata rule file is missing")
         return False
