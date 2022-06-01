@@ -73,7 +73,6 @@ class Sightings:
     def __decode_dns(self, dict_message: dict, tokens: list):
         dns_message = dict_message[tokens[0]]
         query = dns_message[tokens[1]]
-        print(query)
         for q in query:
             attrib = q[tokens[2]]
             self.misp_client.add_sighting(attrib)
