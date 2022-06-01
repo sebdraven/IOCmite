@@ -45,7 +45,11 @@ class Sightings:
         Args:
             message ([strt]): [message of the alerts]
         """
-        dict_message = json.loads(message)
+        try:
+            dict_message = json.loads(message)
+        except Exception as e:
+            self.logger.error(e)
+            return
         metadata = dict_message.get("alert", {}).get("metadata", {})
         if self.metadata in metadata:
             path_json = metadata[self.metadata][0]
