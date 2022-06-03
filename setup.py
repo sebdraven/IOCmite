@@ -9,7 +9,7 @@ with open("README.md", "r", encoding="utf-8") as readme_fp:
 
 setup(
     name="iocmite",
-    version="1.0",
+    version="0.1",
     description="Import indicators of different data sources to dataset Suricata and add sightings in MISP on this indicators",
     long_description=long_description,
     long_description_content_type="text/markdown",
