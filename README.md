@@ -20,6 +20,14 @@ pip install -r requirements.txt`
 python setup.py install
 ```
 
+or
+
+```bash
+python -m'venv' venv && source venv\bin\activate
+pip install iocmite
+iocmite --help
+```
+
 Download the last release of Suricata [here](https://www.openinfosecfoundation.org/download/suricata-current.tar.gz)
 and run:
 
