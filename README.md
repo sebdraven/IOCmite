@@ -1,5 +1,8 @@
 # Suricata from to sources CTI
 
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/sebdraven/IOCmite.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sebdraven/IOCmite/alerts/)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/sebdraven/IOCmite.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sebdraven/IOCmite/context:python)
+
 the purpose of the application is to import attributes from different sources of threat Intelligence into suricata datasets to put them under surveillance.
 
 ## Concepts of datasets in Suricata
@@ -17,7 +20,7 @@ pip install -r requirements.txt`
 python setup.py install
 ```
 
-Download the last release of Suricata [here](https://www.openinfosecfoundation.org/download/suricata-current.tar.gz) 
+Download the last release of Suricata [here](https://www.openinfosecfoundation.org/download/suricata-current.tar.gz)
 and run:
 
 ```bash
@@ -107,11 +110,8 @@ To catch alert from redis and send sightings to MISP, run the following command:
 iocmite --config /path/to/json/file/settings.json --redis --sightings
 ```
 
-
 To catch alert from eve_json and send sightings to MISP, run the following command:
 
 ```bash
 iocmite --config /path/to/json/file/settings.json --eve_json --sightings
 ```
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/sebdraven/IOCmite.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sebdraven/IOCmite/alerts/)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/sebdraven/IOCmite.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sebdraven/IOCmite/alerts/)
