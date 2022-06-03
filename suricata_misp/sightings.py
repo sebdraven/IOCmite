@@ -1,5 +1,4 @@
 import json
-import logging
 import time
 import tailer
 from suricata_misp.misp_client import MispClient

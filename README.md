@@ -113,3 +113,5 @@ To catch alert from eve_json and send sightings to MISP, run the following comma
 ```bash
 iocmite --config /path/to/json/file/settings.json --eve_json --sightings
 ```
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/sebdraven/IOCmite.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sebdraven/IOCmite/alerts/)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/sebdraven/IOCmite.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sebdraven/IOCmite/alerts/)

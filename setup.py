@@ -1,10 +1,7 @@
-from setuptools import setup
-from setuptools import find_packages
-
 """Packaging tool for IOCMite"""
 
 from setuptools import setup
-from setuptools import find_packages
+
 
 """Returns contents of README.md."""
 with open("README.md", "r", encoding="utf-8") as readme_fp:

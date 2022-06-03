@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import argparse
 import json
-import logging
 import os.path
 from idstools import rule
 from utils.logger import get_logger
@@ -35,7 +34,6 @@ def check_metadata(settings: dict, log: Logger):
     if not os.path.isfile(rule_suricata):
         log.error("[-] Suricata rule file is missing")
         return False
-    rule_dict = {}
     try:
         rules = rule.parse_file(rule_suricata)
     except Exception as e:
@@ -100,7 +98,9 @@ def import_iocs(settings: dict, is_redis: bool, is_tmp_file: bool, log: Logger):
     key_misp = settings.get("misp", {}).get("key", "")
     if url_misp and key_misp:
         client_misp = MispClient(log, url_misp, key_misp)
-        suri_socket = settings.get("suricata_socket", "/var/run/suricata/suricata-command.socket")
+        suri_socket = settings.get(
+            "suricata_socket", "/var/run/suricata/suricata-command.socket"
+        )
         sc_dataset = Suricata_Dataset(path_socket=suri_socket)
 
         if is_tmp_file:
