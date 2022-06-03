@@ -6,7 +6,6 @@ from suricata_misp.misp_client import MispClient
 from multiprocessing import Process
 import os.path
 from redis import StrictRedis
-from logging import Logger
 
 
 class Sightings:
@@ -14,7 +13,7 @@ class Sightings:
         self,
         misp_client: MispClient,
         metadata: str,
-        logger: Logger,
+        logger: logging.Logger,
         eve_json_file="",
         key_redis="suricata",
         db=0,

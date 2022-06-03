@@ -8,7 +8,7 @@ from suricata_misp.suricata_dataset import Suricata_Dataset
 from suricata_misp.misp_client import MispClient
 from suricata_misp.sched_client import Sched
 from suricata_misp.sightings import Sightings
-from logging import Logger
+import logging
 
 
 def config(config: str):
@@ -23,7 +23,7 @@ def config(config: str):
         return False
 
 
-def check_metadata(settings: dict, log: Logger):
+def check_metadata(settings: dict, log: logging.Logger):
     """Check if the metadata is valid.
 
     Args:
@@ -51,7 +51,7 @@ def check_metadata(settings: dict, log: Logger):
     return True
 
 
-def sightings(settings: dict, is_redis: bool, eve_json: bool, log: Logger):
+def sightings(settings: dict, is_redis: bool, eve_json: bool, log: logging.Logger):
     """parse alerts Suricata in redis or eve_json to add sightings in MISP.
 
     Args:
@@ -83,7 +83,7 @@ def sightings(settings: dict, is_redis: bool, eve_json: bool, log: Logger):
         exit(1)
 
 
-def import_iocs(settings: dict, is_redis: bool, is_tmp_file: bool, log: Logger):
+def import_iocs(settings: dict, is_redis: bool, is_tmp_file: bool, log: logging.Logger):
     """Download the last indicator from the the last run to store in a dataset Suricata.
 
     Args:
