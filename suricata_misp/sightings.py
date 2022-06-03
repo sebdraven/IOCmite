@@ -1,6 +1,7 @@
 import json
 import time
 import tailer
+import logging
 from suricata_misp.misp_client import MispClient
 from multiprocessing import Process
 import os.path
