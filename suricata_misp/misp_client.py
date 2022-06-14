@@ -1,14 +1,18 @@
+from typing import overload
 from pymisp.api import PyMISP
 from pymisp.mispevent import MISPSighting
 from logging import Logger
 
+from suricata_misp.cti_feeds import CTI_Feed
 
-class MispClient:
+
+class MispClient(CTI_Feed):
     def __init__(self, logger: Logger, url: str, key: str):
 
         self.api = PyMISP(url=url, key=key)
         self.logger = logger
 
+    @overload
     def get_last_attributes(self, datefrom: str, type_attribute: str):
         """Get last attributes from the device .
 
@@ -29,7 +33,11 @@ class MispClient:
         if res:
             for r in res["Attribute"]:
                 yield r
-
+    
+    def get_last_attributes_by_tags(datefrom: str, tags: list):
+        
+        return super().get_last_attributes_by_tags(tags)
+    
     def add_sighting(self, attribute_value: str):
         """Add a sight in MISP on the attribute value.
 

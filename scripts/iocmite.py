@@ -82,6 +82,16 @@ def sightings(settings: dict, is_redis: bool, eve_json: bool, log: logging.Logge
         log.error("[-] MISP url or key is missing")
         exit(1)
 
+def get_tags(settings: dict,log: logging.Logger):
+    """Get the tags from the configuration file / CLI
+
+    Args:
+        settings (str): [file of the configuration]
+    """
+    
+    misp_tags = settings.get("tags", [])
+    
+    return misp_tags
 
 def import_iocs(settings: dict, is_redis: bool, is_tmp_file: bool, log: logging.Logger):
     """Download the last indicator from the the last run to store in a dataset Suricata.
