@@ -12,7 +12,7 @@ class MispClient(CTI_Feed):
         self.api = PyMISP(url=url, key=key)
         self.logger = logger
 
-    @overload
+    
     def get_last_attributes(self, datefrom: str, type_attribute: str):
         """Get last attributes from the device .
 
