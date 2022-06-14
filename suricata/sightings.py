@@ -1,5 +1,6 @@
 import json
 import time
+from suricata_misp.cti_sightings import CTI_Sightings
 import tailer
 import logging
 from suricata_misp.misp_client import MispClient
@@ -11,14 +12,14 @@ from redis import StrictRedis
 class Sightings:
     def __init__(
         self,
-        misp_client: MispClient,
+        cti_sigthing: CTI_Sightings,
         metadata: str,
         logger: logging.Logger,
         eve_json_file="",
         key_redis="suricata",
         db=0,
     ) -> None:
-        self.misp_client = misp_client
+        self.cti_sighting = cti_sigthing
         self.db = db
         self.key_redis = key_redis
         self.metadata = metadata
@@ -71,14 +72,14 @@ class Sightings:
         attrib = dict_message[tokens[0]]
         for token in tokens[1:]:
             attrib = attrib[token]
-        self.misp_client.add_sighting(attrib)
+        self.cti_sighting.add_sighting(attrib)
 
     def __decode_dns(self, dict_message: dict, tokens: list):
         dns_message = dict_message[tokens[0]]
         query = dns_message[tokens[1]]
         for q in query:
             attrib = q[tokens[2]]
-            self.misp_client.add_sighting(attrib)
+            self.cti_sighting.add_sighting(attrib)
 
     def __pull_redis(self):
         """Pull the alerts from the dataset of redis  and add a sighiting in MISP server"""

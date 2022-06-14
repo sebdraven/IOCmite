@@ -1,12 +1,13 @@
-from typing import overload
+
 from pymisp.api import PyMISP
 from pymisp.mispevent import MISPSighting
 from logging import Logger
 
 from suricata_misp.cti_feeds import CTI_Feed
+from suricata_misp.cti_sightings import CTI_Sightings
 
 
-class MispClient(CTI_Feed):
+class MispFeed(CTI_Feed):
     def __init__(self, logger: Logger, url: str, key: str):
 
         self.api = PyMISP(url=url, key=key)
@@ -34,10 +35,26 @@ class MispClient(CTI_Feed):
             for r in res["Attribute"]:
                 yield r
     
-    def get_last_attributes_by_tags(datefrom: str, tags: list):
-        
-        return super().get_last_attributes_by_tags(tags)
+    def get_last_attributes_by_tags(self,datefrom: str, tags: list):
+        """Get last attributes from MISP instance by tags.
+            Args:
+                datefrom (str): [date from the last attributes]
+                tags (list): [tags to search]
+            Yields:
+                [str]: [values of the attributes ]
+        """
+        res = self.api.search(controller="attributes", date_from=datefrom, tags=tags)    
+        self.logger.info("[-] get %s attributes" % len(res["Attribute"]))
+        if res:
+            for r in res["Attribute"]:
+                yield r
     
+    
+class MISP_Sightings(CTI_Sightings):
+    def __init__(self,url:str, key:str, logger:Logger):
+        self.api = PyMISP(url=url, key=key)
+        self.logger = logger
+
     def add_sighting(self, attribute_value: str):
         """Add a sight in MISP on the attribute value.
 
@@ -53,4 +70,5 @@ class MispClient(CTI_Feed):
             self.logger.info(
                 "add sighting to %s from event %s title: %s"
                 % (attribute_value, event["Event"]["id"], event["Event"]["info"]),
+
             )
