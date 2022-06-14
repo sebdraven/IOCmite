@@ -1,22 +1,24 @@
-from suricata_misp.last_run import LastRun
+
+import imp
 from redis import StrictRedis
 from dateutil import parser
 from datetime import datetime
-from suricata_misp.misp_client import MispClient
-from suricata_misp.suricata_dataset import Suricata_Dataset
 import base64
 
+from cti.cti_feeds import CTI_Feed
+from suricata.suricata_dataset import Suricata_Dataset
+from scheduler.last_run import LastRun
 
 class Sched:
     def __init__(
         self,
-        client_misp: MispClient,
+        cti_feed: CTI_Feed,
         sc_dataset: Suricata_Dataset,
         is_redis=False,
         tmp_file="",
     ):
         self.client_redis = StrictRedis(db=1)
-        self.client_misp = client_misp
+        self.cti_feed = cti_feed
         self.sc_dataset = sc_dataset
         self.last_run = LastRun(is_redis=is_redis, tmp_file=tmp_file)
 
@@ -28,7 +30,7 @@ class Sched:
         else:
             date_from = None
         for type_attr, name_dataset_type in attributes_datasets.items():
-            for att in self.client_misp.get_last_attributes(date_from, type_attr):
+            for att in self.cti_feed.get_last_attributes(date_from, type_attr):
                 attr_encode = base64.b64encode(att["value"].encode()).decode()
                 name_dataset = name_dataset_type["name"]
                 type_suricata = name_dataset_type["type"]
