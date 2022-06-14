@@ -1,9 +1,8 @@
 import json
 import time
-from suricata_misp.cti_sightings import CTI_Sightings
+from cti.cti_sightings import CTI_Sightings
 import tailer
 import logging
-from suricata_misp.misp_client import MispClient
 from multiprocessing import Process
 import os.path
 from redis import StrictRedis
@@ -66,7 +65,7 @@ class Sightings:
         attrib = dict_message[tokens[0]]
         for token in tokens[1:]:
             attrib = attrib[token]
-        self.misp_client.add_sighting(attrib)
+        self.cti_sighting.add_sighting(attrib)
 
     def __decode_tls(self, dict_message: dict, tokens: list):
         attrib = dict_message[tokens[0]]
