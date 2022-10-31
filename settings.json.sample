@@ -8,9 +8,9 @@
     "metadata": "sightings",
     "tmp_file": "/tmp/last_run",
     "rule": "path_of_your_rule",
-    "sources": {
-        "misp": {
-            "datasets": {
+    "datasets": {
+        "sources": {
+            "misp": {
                 "ip-src": {
                     "name": "ips",
                     "type": "string"
