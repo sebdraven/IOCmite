@@ -15,7 +15,8 @@ This concept is detailed [here](https://suricata.readthedocs.io/en/suricata-6.0.
 
 ```bash
 git clone  https://github.com/sebdraven/iocmite.git
-python3 -m'venv' venv && source venv\bin\activate
+cd iocmite
+python3 -m'venv' venv && source venv/bin/activate
 pip install -r requirements.txt`
 python setup.py install
 ```
@@ -23,16 +24,19 @@ python setup.py install
 or
 
 ```bash
-python -m'venv' venv && source venv\bin\activate
+cd <IOCmite directory>
+python -m'venv' venv && source venv/bin/activate
 pip install iocmite
 iocmite --help
 ```
 
-Download the last release of Suricata [here](https://www.openinfosecfoundation.org/download/suricata-current.tar.gz)
-and run:
+Clone the latest release of Suricata and install `surcatasc`:
 
 ```bash
-tar xvfz suricata-6.0.x && cd suricata-6.0.x/python && python setup install
+git clone https://github.com/OISF/suricata.git /tmp/suricata-git
+cd /tmp/suricata-git/python
+cp suricata/config/defaults.py{.in,}
+setup install
 ```
 
 ## Json setting and Rule Suricata for MISP source and Sightings
@@ -77,7 +81,22 @@ tar xvfz suricata-6.0.x && cd suricata-6.0.x/python && python setup install
 }
 ```
 
-Sample signatures are provided in the rules directory. For example, the one matchine on HTTP hostname is:
+Sample signatures are provided in the rules directory. For example, the one matching on HTTP hostname is:
+
+Please be aware these datasets should be defined within Suricata, for example;
+
+```YAML
+datasets:
+  dbl:
+    type: string
+    save: dbl.lst
+  udbl:
+    type: string
+    save: udbl.lst
+  ips:
+    type: string
+    save: ips.lst
+```
 
 ```
 alert http any any -> any any (msg: "domains TA (HTTP)"; http.host; dataset:isset,dbl, type string, state /var/lib/suricata/data/dbl.lst; sid:1100001; rev:1; metadata:sightings http.hostname;)
